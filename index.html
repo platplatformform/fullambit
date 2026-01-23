@@ -125,22 +125,14 @@ html {
     
     <!-- Videos -->
     <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-1 self-start h-full" 
-     x-data="{ activeIndex: 1 }"
+     x-data="{ activeIndex: 0 }"
      x-init="
-        // Initialize Vimeo players
         players = {
           1: new Vimeo.Player($refs.vimeo1),
           2: new Vimeo.Player($refs.vimeo2),
           3: new Vimeo.Player($refs.vimeo3)
         };
     
-        // Mute all players to allow autoplay
-        Object.values(players).forEach(player => player.setVolume(0));
-    
-        // Play first video automatically
-        players[1].play().catch(() => { console.log('Autoplay blocked'); });
-    
-        // Watch activeIndex and play/pause accordingly
         $watch('activeIndex', value => {
           Object.entries(players).forEach(([key, player]) => {
             if (parseInt(key) === value) {
@@ -157,7 +149,7 @@ html {
       @click="if(activeIndex !== 1) activeIndex = 1"
        :class="{ 'active': activeIndex === 1 }">
         
-        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo1" src="https://player.vimeo.com/video/1129966060?h=a89ce1db45&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&autoplay=1&muted=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 01"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo1" src="https://player.vimeo.com/video/1129966060?h=a89ce1db45&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 01"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
         
         <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[30 - 06 - 2025 13:45 W]</div>
         
@@ -169,7 +161,7 @@ html {
       @click="if(activeIndex !== 2) activeIndex = 2"
        :class="{ 'active': activeIndex === 2 }">
         
-        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo2" src="https://player.vimeo.com/video/1129968280?h=1a3d4cfebd&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 02"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo2" src="https://player.vimeo.com/video/1129968280?h=1a3d4cfebd&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 02"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
         
         <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[30 - 06 - 2025 14:25 S]</div>
         
@@ -181,7 +173,7 @@ html {
       @click="if(activeIndex !== 3) activeIndex = 3"
        :class="{ 'active': activeIndex === 3 }">
         
-        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo3" src="https://player.vimeo.com/video/1129970566?h=80fb557245&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 03"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo3" src="https://player.vimeo.com/video/1129970566?h=80fb557245&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 03"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
         
         <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[30 - 06 - 2025 15:10 SW]</div>
         
@@ -265,13 +257,13 @@ html {
         </div>
         
         <div class="block md:hidden pt-4 mb-1 text-xl">
-          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> is a site-specific, collaborative project that chronicles several sculptural interventions as they engage with the wetlands near Saugerties, NY as a site of regenerative growth and interspecies interaction. 
+          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> is a site-specific, collaborative project chronicling several sculptural interventions as they engage with the wetlands near Saugerties, NY as a site of regenerative growth and interspecies interaction. 
           <br/><br/>
-          Featuring four large, non-figurative steel sculptures that subtly alter the flow of the water in which they are situated, this project harnesses wetland processes such as stagnation and leaching. The design of these works yields new pathways for water retention and soil collection, while providing niches for flora and fauna.
+          Featuring four large, non-figurative steel sculptures that subtly alter the flow of water in the vernal pool in which they are situated, this project harnesses wetland processes such as stagnation and leaching. The design of these works yields new pathways for water retention and soil collection, while providing niches for flora and fauna.
           <br/><br/>
           Transmitted to audiences through seasonal video documentation uploaded to this site, the work connects far-flung audiences to an experimental ecosystem. Virtual visitors are invited to observe how these sculptures cohabitate with their natural wetland surroundings, gradually submerging into and re-emerging from the landscape in response to shifting water levels.
           <br/><br/>
-          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> materializes the artists’ interest in what it means to make a work whose interaction with land could ultimately be considered quasi-regenerative and barely traceable. At once tangible and virtual, this hybrid project marks a continuation of Johnson and Loeppky-Kolesnik's longstanding artistic collaboration and shared interest in sense of place and site-specificity with a new level of focus.
+          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> materializes the artists’ interest in what it means to make a work whose interaction with land could ultimately be considered quasi-regenerative and barely traceable. At once tangible and virtual, this hybrid project marks a continuation of Johnson and Loeppky-Kolesnik's longstanding artistic collaboration and shared interest in sense of place and site-specificity with a new level of focus.
         </div>
         
         <div class="pt-2 md:pt-10">
@@ -329,13 +321,13 @@ html {
       <div class="hidden md:block col-span-1 pt-2">
         
         <div class="text-3xl">
-          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> is a site-specific, collaborative project that chronicles several sculptural interventions as they engage with the wetlands near Saugerties, NY as a site of regenerative growth and interspecies interaction. 
+          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> is a site-specific, collaborative project chronicling several sculptural interventions as they engage with the wetlands near Saugerties, NY as a site of regenerative growth and interspecies interaction. 
           <br/><br/>
-          Featuring four large, non-figurative steel sculptures that subtly alter the flow of the water in which they are situated, this project harnesses wetland processes such as stagnation and leaching. The design of these works yields new pathways for water retention and soil collection, while providing niches for flora and fauna.
+          Featuring four large, non-figurative steel sculptures that subtly alter the flow of water in the vernal pool in which they are situated, this project harnesses wetland processes such as stagnation and leaching. The design of these works yields new pathways for water retention and soil collection, while providing niches for flora and fauna.
           <br/><br/>
           Transmitted to audiences through seasonal video documentation uploaded to this site, the work connects far-flung audiences to an experimental ecosystem. Virtual visitors are invited to observe how these sculptures cohabitate with their natural wetland surroundings, gradually submerging into and re-emerging from the landscape in response to shifting water levels.
           <br/><br/>
-          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> materializes the artists’ interest in what it means to make a work whose interaction with land could ultimately be considered quasi-regenerative and barely traceable. At once tangible and virtual, this hybrid project marks a continuation of Johnson and Loeppky-Kolesnik's longstanding artistic collaboration and shared interest in sense of place and site-specificity with a new level of focus.
+          <i>Sitting a little way off, beyond the trees, so as to remain in the full ambit.</i> materializes the artists’ interest in what it means to make a work whose interaction with land could ultimately be considered quasi-regenerative and barely traceable. At once tangible and virtual, this hybrid project marks a continuation of Johnson and Loeppky-Kolesnik's longstanding artistic collaboration and shared interest in sense of place and site-specificity with a new level of focus.
         </div>
         
       </div>
