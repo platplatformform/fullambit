@@ -187,32 +187,45 @@ html {
       <ul class="w-full flex flex-cols text-xs uppercase justify-between">
         
         <script>
-        async function displayWeather(zip) {
-          const apiKey = '58d8ca166e0b4f82a0a12735251112';
-          const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${zip}&aqi=no`;
-          try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
-            const data = await res.json();
-            const tempF = Math.round(data.current.temp_f);
-            const localtime = data.location.localtime;
-            const timeParts = localtime.split(" ")[1].split(":");
-            const hours = timeParts[0].padStart(2, "0");
-            const minutes = timeParts[1].padStart(2, "0");
-            const seconds = new Date().getSeconds().toString().padStart(2,"0");
-            const tz = "EST";
-            const timeString = `${hours}:${minutes}:${seconds} ${tz}`;
-            document.getElementById("weather-time").innerText = `${timeString} ${tempF}°F`;
-          } catch (err) {
-            console.error(err);
-            document.getElementById("weather-time").innerText = "Failed to load weather";
-          }
-        }
-        displayWeather("12477");
-        setInterval(() => displayWeather("12477"), 1000);
-        </script>
-        
-        <li id="weather-time" class="opacity-50 tracking-[0.06rem]">21:30:59EST  17°C</li>
+  async function displayWeather(zip) {
+    const apiKey = '58d8ca166e0b4f82a0a12735251112';
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${zip}&aqi=no`;
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
+
+      const data = await res.json();
+
+      const tempF = Math.round(data.current.temp_f);
+      const tempC = Math.round(data.current.temp_c);
+
+      const localtime = data.location.localtime;
+      const timeParts = localtime.split(" ")[1].split(":");
+      const hours = timeParts[0].padStart(2, "0");
+      const minutes = timeParts[1].padStart(2, "0");
+      const seconds = new Date().getSeconds().toString().padStart(2,"0");
+
+      const tz = "EST";
+      const timeString = `${hours}:${minutes}:${seconds} ${tz}`;
+
+      document.getElementById("weather-time").innerText =
+        `${timeString} ${tempF}°F / ${tempC}°C`;
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("weather-time").innerText = "Failed to load weather";
+    }
+  }
+
+  displayWeather("12477");
+  setInterval(() => displayWeather("12477"), 1000);
+</script>
+
+<li id="weather-time" class="opacity-50 tracking-[0.06rem]">
+  21:30:59 EST 17°C
+</li>
+
         <li class="cursor-pointer" @click="
           if(!showInfo) {
             showInfo = true;
