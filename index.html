@@ -110,30 +110,41 @@ html {
 </head>
 
 <body>
-<main x-data="{ showInfo: false }">
+<main x-data="{ showInfo: false, activeSeason: 'summer' }" x-init="
+  $watch('activeSeason', () => {
+    [1,2,3].forEach(i => {
+      summerPlayers[i].pause();
+      winterPlayers[i].pause();
+    });
+    window.dispatchEvent(new Event('reset-season'));
+  });
+">
   <section class="py-1 px-2 w-full h-full md:h-[100dvh] flex flex-col">
     
     <!-- Menu -->
     <div class="w-full pb-1 self-start">
       <ul class="flex flex-cols text-xs uppercase tracking-[0.06rem]">
-        <li class="active mr-2">Summer 2025</li>
-        <li class="unactive mr-2 opacity-25">Spring 2026</li>
-        <li class="unactive opacity-25">Winter 2026</li>
+        <li class="mr-2 cursor-pointer" :class="activeSeason === 'summer' ? '' : 'opacity-35'" 
+            @click="activeSeason = 'summer'; window.dispatchEvent(new Event('reset-season'))">Summer 2025</li>
+        <li class="mr-2 cursor-pointer unactive" :class="activeSeason === 'winter' ? '' : 'opacity-35'" 
+            @click="activeSeason = 'winter'; window.dispatchEvent(new Event('reset-season'))">Winter 2026</li>
+        <li class="unactive opacity-10">Spring 2026</li>
       </ul>
     </div>
     
-    <!-- Videos -->
+    <!-- Summer 2025 -->
     <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-1 self-start h-full" 
-     x-data="{ activeIndex: 0 }"
+     x-data="{ activeIndex: 0, players: {} }" 
+     x-show="activeSeason === 'summer'" @reset-season.window="activeIndex = null"
      x-init="
-        players = {
+        summerPlayers = {
           1: new Vimeo.Player($refs.vimeo1),
           2: new Vimeo.Player($refs.vimeo2),
           3: new Vimeo.Player($refs.vimeo3)
         };
     
         $watch('activeIndex', value => {
-          Object.entries(players).forEach(([key, player]) => {
+          Object.entries(summerPlayers).forEach(([key, player]) => {
             if (parseInt(key) === value) {
               player.setVolume(1);  // optional: unmute when clicked
               player.play().catch(() => {});
@@ -142,6 +153,7 @@ html {
             }
           });
         });
+        window.addEventListener('reset-season', () => { activeIndex = null; });
      ">
       
       <div class="hover:[&>.uppercase]:opacity-100 h-min relative col-span-1 md:[&.active]:col-span-2 mb-1 [&:not(.active)_.uppercase]:opacity-25"
@@ -182,50 +194,112 @@ html {
       
     </div>
     
+    <!-- Winter 2026 -->
+    <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-1 self-start h-full" 
+     x-data="{ activeIndex: 0, players: {} }" 
+     x-show="activeSeason === 'winter'" @reset-season.window="activeIndex = null"
+     x-init="
+        winterPlayers = {
+          1: new Vimeo.Player($refs.vimeo4),
+          2: new Vimeo.Player($refs.vimeo5),
+          3: new Vimeo.Player($refs.vimeo6)
+        };
+    
+        $watch('activeIndex', value => {
+          Object.entries(winterPlayers).forEach(([key, player]) => {
+            if (parseInt(key) === value) {
+              player.setVolume(1);  // optional: unmute when clicked
+              player.play().catch(() => {});
+            } else {
+              player.pause();
+            }
+          });
+        });
+        window.addEventListener('reset-season', () => { activeIndex = null; });
+     ">
+      
+      <div class="hover:[&>.uppercase]:opacity-100 h-min relative col-span-1 md:[&.active]:col-span-2 mb-1 [&:not(.active)_.uppercase]:opacity-25"
+      @click="if(activeIndex !== 1) activeIndex = 1"
+       :class="{ 'active': activeIndex === 1 }">
+        
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo4" src="https://player.vimeo.com/video/1166403267?h=6763b1b793&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 01"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        
+        <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[13 - 02 - 2026]</div>
+        
+        <div class="absolute inset-0 z-10 cursor-pointer"></div>
+        
+      </div>
+      
+      <div class="hover:[&>.uppercase]:opacity-100 h-min relative col-span-1 md:[&.active]:col-span-2 mb-1 [&:not(.active)_.uppercase]:opacity-25"
+      @click="if(activeIndex !== 2) activeIndex = 2"
+       :class="{ 'active': activeIndex === 2 }">
+        
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo5" src="https://player.vimeo.com/video/1166405188?h=be28ee9ccf&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 02"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        
+        <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[13 - 02 - 2026]</div>
+        
+        <div class="absolute inset-0 z-10 cursor-pointer"></div>
+        
+      </div>
+      
+      <div class="hover:[&>.uppercase]:opacity-100 h-min relative col-span-1 md:[&.active]:col-span-2 mb-1 [&:not(.active)_.uppercase]:opacity-25"
+      @click="if(activeIndex !== 3) activeIndex = 3"
+       :class="{ 'active': activeIndex === 3 }">
+        
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe x-ref="vimeo6" src="https://player.vimeo.com/video/1166412343?h=01b093f61f&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&loop=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="full ambit 03"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        
+        <div class="tracking-[0.06rem] uppercase text-xs mt-0.5">[13 - 02 - 2026]</div>
+        
+        <div class="absolute inset-0 z-10 cursor-pointer"></div>
+        
+      </div>
+      
+    </div>
+    
     <!-- Footer -->
     <div class="w-full self-end">
       <ul class="w-full flex flex-cols text-xs uppercase justify-between">
         
         <script>
-  async function displayWeather(zip) {
-    const apiKey = '58d8ca166e0b4f82a0a12735251112';
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${zip}&aqi=no`;
-
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
-
-      const data = await res.json();
-
-      const tempF = Math.round(data.current.temp_f);
-      const tempC = Math.round(data.current.temp_c);
-
-      const localtime = data.location.localtime;
-      const timeParts = localtime.split(" ")[1].split(":");
-      const hours = timeParts[0].padStart(2, "0");
-      const minutes = timeParts[1].padStart(2, "0");
-      const seconds = new Date().getSeconds().toString().padStart(2,"0");
-
-      const tz = "EST";
-      const timeString = `${hours}:${minutes}:${seconds} ${tz}`;
-
-      document.getElementById("weather-time").innerText =
-        `${timeString} ${tempF}°F / ${tempC}°C`;
-
-    } catch (err) {
-      console.error(err);
-      document.getElementById("weather-time").innerText = "Failed to load weather";
-    }
-  }
-
-  displayWeather("12477");
-  setInterval(() => displayWeather("12477"), 1000);
-</script>
-
-<li id="weather-time" class="opacity-50 tracking-[0.06rem]">
-  21:30:59 EST 17°C
-</li>
-
+          async function displayWeather(zip) {
+            const apiKey = '58d8ca166e0b4f82a0a12735251112';
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${zip}&aqi=no`;
+        
+            try {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
+        
+              const data = await res.json();
+        
+              const tempF = Math.round(data.current.temp_f);
+              const tempC = Math.round(data.current.temp_c);
+        
+              const localtime = data.location.localtime;
+              const timeParts = localtime.split(" ")[1].split(":");
+              const hours = timeParts[0].padStart(2, "0");
+              const minutes = timeParts[1].padStart(2, "0");
+              const seconds = new Date().getSeconds().toString().padStart(2,"0");
+        
+              const tz = "EST";
+              const timeString = `${hours}:${minutes}:${seconds} ${tz}`;
+        
+              document.getElementById("weather-time").innerText =
+                `${timeString} ${tempF}°F / ${tempC}°C`;
+        
+            } catch (err) {
+              console.error(err);
+              document.getElementById("weather-time").innerText = "Failed to load weather";
+            }
+          }
+        
+          displayWeather("12477");
+          setInterval(() => displayWeather("12477"), 1000);
+        </script>
+        
+        <li id="weather-time" class="opacity-50 tracking-[0.06rem]">
+          21:30:59 EST 17°C
+        </li>
+        
         <li class="cursor-pointer" @click="
           if(!showInfo) {
             showInfo = true;
